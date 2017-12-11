@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Remote Clip</title>
+  </head>
+  <body>
+    <h1>1. Current configuration</h1>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    <div>
+      <span>Ip address: </span>
+      <span id="local-ip">none</span>
+    </div>
+    <div>
+      <span>Port: </span>
+      <span id="local-port">none</span>
+    </div>
+
+    <h1>2. Remote app</h1>
+    <form>
+      <input type="text" id="remote_ip">
+      <button id="set_remote_ip">Set</button>
+    </form>
+
+    <h1>Debug</h1>
+    <footer>
+      <small>
+        Node.js
+        <script>document.write(process.versions.node)</script>, Chromium
+        <script>document.write(process.versions.chrome)</script>, and Electron
+        <script>document.write(process.versions.electron)</script>.
+      </small>
+    </footer>
+
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+  </body>
+</html>
