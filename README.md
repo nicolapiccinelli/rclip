@@ -1,4 +1,4 @@
-# remote clip
+# Remote clip
 
 This is a cross-platform electron based application for sharing the content of the clipboard between to computer.
 

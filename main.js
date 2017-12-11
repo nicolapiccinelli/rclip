@@ -74,7 +74,7 @@ const socket = udp.createSocket('udp4');
 
 // App variables
 var last_msg = "";
-var port = 226644;
+var port = 26664;
 var address = ip.address();
 var remote_addr = "localhost";
 
@@ -83,7 +83,11 @@ let tray = null
 app.on('ready', () => {
   tray = new Tray('./logo.jpg')
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Quit' }])
+    {
+      label: 'Quit', click: () => {
+        app.quit();
+      }
+    }])
 
   // Make a change to the context menu
   contextMenu.items[0].checked = false
@@ -100,11 +104,12 @@ app.on('ready', () => {
 
 // IPC
 ipcMain.on('ready', (event, arg) => {
-  event.sender.send('initialization', { addr: address, port: port });
+  event.sender.send('initialization', { addr: address, port: port, remote: remote_addr });
 });
 
-ipcMain.on('remoteIpSet', (event, arg) => {
+ipcMain.on('remote_ip_set', (event, arg) => {
   remote_addr = arg;
+  event.sender.send('remote_ip_set_done', {addr: remote_addr});
   console.log(remote_addr);
 })
 
@@ -206,6 +211,12 @@ function remoteConnector() {
     console.log('Received %d bytes from %s:%d\n', msg.length, info.address, info.port);
 
     last_msg = msg.toString();
+
+    // Object
+    notifier.notify({
+      'title': 'Remote Clip',
+      'message': 'A new clipboard is ready to copied'
+    });    
   });
 
   socket.bind(port);
